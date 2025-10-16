@@ -1,5 +1,5 @@
 const CONFIG = {
-  BASE_URL: "http://localhost:2095"
+  BASE_URL: "http://localhost:2025"
 };
 
 
