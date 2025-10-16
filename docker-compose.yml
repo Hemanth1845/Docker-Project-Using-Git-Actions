@@ -1,10 +1,11 @@
 services:
-  mysqldb:
+  mysql:
     image: mysql:8
     container_name: mysql
+    restart: always
     environment:
-      MYSQL_ROOT_PASSWORD: root
       MYSQL_DATABASE: nurseydb
+      MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
     ports:
       - "3307:3306"
     volumes:
@@ -12,25 +13,32 @@ services:
     networks:
       - springboot-mysql-net
 
-  backend:
+  springbootapp:
     image: hemanth1845/nursery-backend:latest
     container_name: springbootapp
+    restart: always
+    depends_on:
+      - mysql
     ports:
       - "2025:2096"
-    depends_on:
-      - mysqldb
-    restart: on-failure
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/nurseydb
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: ""
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update
+      SPRING_JPA_SHOW_SQL: "true"
+      SPRING_JPA_PROPERTIES_HIBERNATE_DIALECT: org.hibernate.dialect.MySQLDialect
     networks:
       - springboot-mysql-net
 
-  frontend:
+  reactapp:
     image: hemanth1845/nursery-frontend:latest
     container_name: reactapp
+    restart: always
+    depends_on:
+      - springbootapp
     ports:
       - "8000:80"
-    depends_on:
-      - backend
-    restart: on-failure
     networks:
       - springboot-mysql-net
 
@@ -39,3 +47,4 @@ volumes:
 
 networks:
   springboot-mysql-net:
+    driver: bridge
