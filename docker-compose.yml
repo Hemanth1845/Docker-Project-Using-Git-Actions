@@ -4,7 +4,7 @@ services:
     container_name: mysql-data
     environment:
       MYSQL_ROOT_PASSWORD: nursery
-      MYSQL_DATABASE: nusery_data
+      MYSQL_DATABASE: nusery_home
     ports:
       - "3307:3306"
     volumes:
