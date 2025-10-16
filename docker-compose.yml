@@ -1,10 +1,10 @@
 services:
   mysqldb:
     image: mysql:8
-    container_name: mysql-data
+    container_name: mysql-db
     environment:
       MYSQL_ROOT_PASSWORD: nursery
-      MYSQL_DATABASE: nursery_home
+      MYSQL_DATABASE: nursery_homes
     ports:
       - "3307:3306"
     volumes:
