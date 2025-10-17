@@ -8,7 +8,7 @@ function App() {
   return (
     <Router>
       <div className="navbar">
-        <h2>🌱 Nursery Home</h2>
+        <h2>🌱 Gowtham home</h2>
         <div className="nav-links">
           <Link to="/">Home</Link>
           <Link to="/add">Add Plant</Link>
