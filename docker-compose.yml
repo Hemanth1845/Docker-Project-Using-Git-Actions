@@ -11,14 +11,27 @@ services:
       - mysql_data:/var/lib/mysql
     networks:
       - springboot-mysql-net
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-p nursery"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
 
   backend:
     image: hemanth1845/nursery-backend:latest
     container_name: springbootapp
     ports:
       - "2025:2096"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysqldb:3306/nursery_homes
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: nursery
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update
+      SPRING_JPA_SHOW_SQL: "true"
     depends_on:
-      - mysqldb
+      mysqldb:
+        condition: service_healthy
     restart: on-failure
     networks:
       - springboot-mysql-net
@@ -39,4 +52,3 @@ volumes:
 
 networks:
   springboot-mysql-net:
-
